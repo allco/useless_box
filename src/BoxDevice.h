@@ -2,7 +2,7 @@
 #define D29CD5B9_1CEA_4E6D_8441_E51E26206AC1
 
 #include <Arduino.h>
-#include "DigitalPin.h"
+#include "src/DigitalPin.h"
 
 class BoxDevice {
     DigitalOutputPin pinDriveBack = DigitalOutputPin(9);

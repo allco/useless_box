@@ -10,6 +10,7 @@ class HalfwayUseCase : public IUseCase {
 private:
     BoxDevice *device;
     Timer *timer = nullptr;
+    Timer *timer2 = nullptr;
 
 public:
     explicit HalfwayUseCase(BoxDevice *device) {
@@ -18,7 +19,7 @@ public:
     }
 
     virtual ~HalfwayUseCase() {
-        releaseTimer();
+        releaseTimers();
     }
 
     void run() override {
@@ -39,31 +40,36 @@ public:
 
     void onMoveArmDown() {
         device->moveArmDown();
-        releaseTimer();
+        releaseTimers();
     }
 
     void onStopArm() {
         device->stopArm();
-        releaseTimer();
+        releaseTimers();
     }
 
     void onMoveArmUp() {
         if (timer == nullptr) {
             Serial.println("HalfwayUseCase timer create");
-            timer = new Timer(100);
+            timer = new Timer(200);
         }
 
         if (timer->isTimedOut()) {
             device->stopArm();
+            if (timer2 == nullptr) timer2 = new Timer(1000);
+            if (timer2->isTimedOut()) {
+                device->moveArmUp();
+            }
         } else {
             device->moveArmUp();
         }
     }
 
-    void releaseTimer() {
+    void releaseTimers() {
         delete timer;
+        delete timer2;
         timer = nullptr;
-        Serial.println("HalfwayUseCase timer release");
+        timer2 = nullptr;
     }
 };
 

@@ -1,7 +1,7 @@
 #include <Arduino.h>
 //#include "src/SimpleCase.h"
-#include "BoxDevice.h"
-#include "HalfwayUseCase.h"
+#include "src/BoxDevice.h"
+#include "src/HalfwayUseCase.h"
 
 BoxDevice *device;
 IUseCase *useCase = nullptr;
@@ -13,7 +13,6 @@ void setup() {
 }
 
 void loop() {
-    delay(100);
     if (useCase == nullptr) useCase = new HalfwayUseCase(device);
     useCase->run();
 }
